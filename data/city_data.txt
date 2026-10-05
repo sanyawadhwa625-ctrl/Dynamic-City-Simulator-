@@ -1,0 +1,18 @@
+NOVA CITY DATA
+
+LOCATIONS
+0 Residential Area
+1 City Center
+2 Hospital
+3 School
+4 Market
+5 Police Station
+
+ROADS
+0 1 5
+0 3 4
+1 2 6
+1 4 3
+2 5 2
+3 4 2
+4 5 4

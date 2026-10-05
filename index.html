@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova City - Dynamic City Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+    <header>
+        <div>
+            <h1>NOVA CITY</h1>
+            <p>Dynamic City Simulator • DSA Visualization</p>
+        </div>
+        <div class="status-pill"><span class="dot"></span> SIMULATION RUNNING</div>
+    </header>
+
+    <main>
+        <section class="city-panel">
+            <div class="map" id="map">
+                <div class="road r1"></div>
+                <div class="road r2"></div>
+                <div class="road r3"></div>
+                <div class="road r4"></div>
+                <div class="road r5"></div>
+                <div class="road r6"></div>
+
+                <div class="junction j1">●</div>
+                <div class="junction j2">●</div>
+                <div class="junction j3">●</div>
+                <div class="junction j4">●</div>
+                <div class="junction j5">●</div>
+
+                <button class="building school" data-name="Green Valley School" data-type="School">🏫<span>Green Valley School</span></button>
+                <button class="building hospital" data-name="Sunrise Hospital" data-type="Hospital">🏥<span>Sunrise Hospital</span></button>
+                <button class="building house1" data-name="Pine Residency" data-type="Residential Area">🏠<span>Pine Residency</span></button>
+                <button class="building market" data-name="Central Market" data-type="Market">🏪<span>Central Market</span></button>
+                <button class="building police" data-name="City Police Station" data-type="Police Station">🚓<span>Police Station</span></button>
+
+                <div id="ambulance" class="vehicle ambulance">🚑</div>
+                <div id="car1" class="vehicle car1">🚗</div>
+                <div id="car2" class="vehicle car2">🚙</div>
+                <div id="routeLine"></div>
+                <div id="accidentMarker">🚧</div>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <h2>City Control</h2>
+
+            <div class="stats">
+                <div><small>TRAFFIC</small><strong id="trafficValue">LOW</strong></div>
+                <div><small>OPEN ROADS</small><strong id="roadValue">6</strong></div>
+                <div><small>EMERGENCY</small><strong id="emergencyValue">NONE</strong></div>
+                <div><small>CONGESTION</small><strong id="congestionValue">32%</strong></div>
+            </div>
+
+            <h3>Simulation Controls</h3>
+            <button id="routeBtn" class="control">🧭 Find Shortest Route</button>
+            <button id="trafficBtn" class="control">🚗 Increase Traffic</button>
+            <button id="emergencyBtn" class="control">🚑 Send Ambulance</button>
+            <button id="accidentBtn" class="control danger">🚧 Simulate Accident</button>
+            <button id="openBtn" class="control success">🛣️ Open Closed Road</button>
+            <button id="resetBtn" class="control">↻ Reset City</button>
+
+            <div class="info-box">
+                <h3>Selected Object</h3>
+                <p id="objectInfo">Click a building on the city map.</p>
+            </div>
+
+            <div class="log-box">
+                <h3>System Log</h3>
+                <div id="log"></div>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <span>Graph • Dijkstra • Queue • Priority Queue • Max Heap • Hash Map</span>
+        <span id="routeStatus">Ready</span>
+    </footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
