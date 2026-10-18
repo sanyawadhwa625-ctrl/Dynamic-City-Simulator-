@@ -33,66 +33,97 @@ document.querySelectorAll(".building").forEach(building => {
     });
 });
 
+
 $("routeBtn").addEventListener("click", async () => {
+    const oldLine = $("routeLine");
+    const routePath = $("shortestRoutePath");
 
-    const line = $("routeLine");
+    if (oldLine) {
+        oldLine.style.display = "none";
+    }
 
-    line.style.display = "block";
-    line.style.left = "15%";
-    line.style.top = "340px";
-    line.style.width = "620px";
-    line.style.transform = "rotate(-20deg";
+    if (!routePath) {
+        $("routeStatus").textContent = "Route overlay missing";
+        log("Could not find shortestRoutePath in index.html.");
+        return;
+    }
 
     try {
-
         const response = await fetch(
             "http://127.0.0.1:5000/city?command=route"
         );
 
         const data = await response.json();
 
-        if (data.status === "success") {
-
-            $("routeStatus").textContent =
-                state.accident
-                ? "Alternate route calculated by C Dijkstra"
-                : "Shortest route calculated by C Dijkstra";
-
-            document.body.classList.add("route-active");
-
-            log(
-                state.accident
-                ? "C Backend: Road closed. Dijkstra recalculated an alternate route."
-                : "C Backend: Dijkstra calculated the shortest route."
-            );
-
-            console.log(
-                "C Backend Output:",
-                data.output
-            );
-
-        } else {
-
-            $("routeStatus").textContent =
-                "Backend error";
-
-            log(
-                "Backend error: " + data.message
-            );
+        if (!response.ok || data.status !== "success") {
+            $("routeStatus").textContent = "Backend error";
+            log("Backend error: " + (data.message || "Route request failed."));
+            return;
         }
 
-    } catch (error) {
+        // Coordinates use the SVG viewBox: 1000 x 800.
+        // The horizontal segment follows the main road.
+        // The upper segment turns toward the hospital-side road.
+        
+        const normalRoute = [
+            [5, 460],
+            [180, 460],
+            [350, 460],
+            [520, 460],
+            [680, 460],
+            [740, 460],
+            [765, 390],
+            [785, 310],
+            [805, 230],
+            [825, 150],
+            [840, 100]
+        ].map(point => point.join(",")).join(" ");
 
-        $("routeStatus").textContent =
-            "Backend connection failed";
 
-        log(
-            "Could not connect to C backend."
+        // Temporary visual alternative for the accident scenario.
+        // This should be replaced with the actual path returned by C.
+        const alternateRoute = [
+            [35, 495],
+            [180, 495],
+            [320, 495],
+            [460, 495],
+            [600, 495],
+            [680, 495],
+            [700, 535],
+            [680, 585],
+            [640, 625],
+            [580, 650]
+        ].map(point => point.join(",")).join(" ");
+
+        routePath.setAttribute(
+            "points",
+            state.accident ? alternateRoute : normalRoute
         );
 
+        routePath.style.display = "block";
+
+        $("routeStatus").textContent = state.accident
+            ? "Alternate route requested"
+            : "Shortest route requested";
+
+        document.body.classList.add("route-active");
+
+        log(
+            state.accident
+                ? "C Backend: Accident scenario processed."
+                : "C Backend: Route request completed."
+        );
+
+        console.log("C Backend Output:", data.output);
+
+    } catch (error) {
+        $("routeStatus").textContent = "Backend connection failed";
+        log("Could not connect to C backend.");
         console.error(error);
     }
 });
+
+
 
 $("trafficBtn").addEventListener("click", async () => {
 

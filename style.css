@@ -34,18 +34,126 @@ main { display:grid; grid-template-columns: 1fr 340px; gap:16px; margin-top:16px
     content:"NOVA CITY"; position:absolute; left:30px; top:24px;
     font-size:26px; font-weight:bold; letter-spacing:5px; color:rgba(255,255,255,.13);
 }
-.road { position:absolute; background:#4b5361; border:2px solid #737b88; box-shadow:0 0 0 2px rgba(0,0,0,.1); }
-.road:after { content:""; position:absolute; background:repeating-linear-gradient(90deg, #d7d9db 0 25px, transparent 25px 45px); opacity:.8; }
-.r1 { left:0; top:330px; width:100%; height:48px; }
-.r1:after { left:0; top:20px; width:100%; height:4px; }
-.r2 { left:44%; top:0; width:52px; height:100%; }
-.r2:after { left:22px; top:0; width:4px; height:100%; background:repeating-linear-gradient(0deg,#d7d9db 0 25px,transparent 25px 45px); }
-.r3 { left:17%; top:155px; width:75%; height:42px; transform:rotate(25deg); }
-.r3:after { left:0; top:18px; width:100%; height:4px; }
-.r4 { left:5%; top:505px; width:75%; height:42px; transform:rotate(-18deg); }
-.r4:after { left:0; top:18px; width:100%; height:4px; }
-.r5 { left:74%; top:90px; width:42px; height:500px; transform:rotate(9deg); }
-.r6 { left:8%; top:90px; width:70%; height:35px; transform:rotate(-8deg); }
+
+/* All city roads */
+.road {
+    position: absolute;
+    background: #4b5361;
+    border: 2px solid #858d9b;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.12);
+    z-index: 1;
+}
+
+/* Road lane markings */
+.road:after {
+    content: "";
+    position: absolute;
+    background: repeating-linear-gradient(
+        90deg,
+        #d7d9db 0 25px,
+        transparent 25px 45px
+    );
+    opacity: 0.85;
+}
+
+/* Main horizontal road */
+.r1 {
+    left: 0;
+    top: 330px;
+    width: 100%;
+    height: 58px;
+}
+.r1:after {
+    left: 0;
+    top: 25px;
+    width: 100%;
+    height: 4px;
+}
+
+/* Main vertical road */
+.r2 {
+    left: 44%;
+    top: 0;
+    width: 62px;
+    height: 100%;
+}
+.r2:after {
+    left: 27px;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        #d7d9db 0 25px,
+        transparent 25px 45px
+    );
+}
+
+/* Upper diagonal road */
+.r3 {
+    left: 17%;
+    top: 155px;
+    width: 75%;
+    height: 52px;
+    transform: rotate(25deg);
+}
+.r3:after {
+    left: 0;
+    top: 24px;
+    width: 100%;
+    height: 4px;
+}
+
+/* Lower diagonal road */
+.r4 {
+    left: 5%;
+    top: 505px;
+    width: 75%;
+    height: 52px;
+    transform: rotate(-18deg);
+}
+.r4:after {
+    left: 0;
+    top: 24px;
+    width: 100%;
+    height: 4px;
+}
+
+/* Road near Sunrise Hospital */
+.r5 {
+    left: 74%;
+    top: 90px;
+    width: 52px;
+    height: 500px;
+    transform: rotate(9deg);
+}
+.r5:after {
+    left: 22px;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        #d7d9db 0 25px,
+        transparent 25px 45px
+    );
+}
+
+/* Upper connecting road */
+.r6 {
+    left: 8%;
+    top: 90px;
+    width: 70%;
+    height: 42px;
+    transform: rotate(-8deg);
+}
+.r6:after {
+    left: 0;
+    top: 19px;
+    width: 100%;
+    height: 4px;
+}
+
 
 .junction { position:absolute; color:#f4f7ff; font-size:25px; z-index:4; text-shadow:0 0 8px #000; }
 .j1 { left:40%; top:312px; } .j2 { left:68%; top:315px; }
@@ -96,8 +204,34 @@ footer { margin-top:16px; display:flex; justify-content:space-between; color:#8f
 
 .closed .r1 { background:#6c3740; }
 .route-active #routeStatus { color:#59d8ff; }
+
 @media(max-width:1000px) {
-    main { grid-template-columns:1fr; }
-    .city-panel { min-height:500px; }
-    .map { height:500px; }
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    .city-panel {
+        min-height: 500px;
+    }
+
+    .map {
+        height: 500px;
+    }
 }
+
+/* Shortest route overlay */
+.shortest-route-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    overflow: visible;
+}
+
+#shortestRoutePath {
+    filter: drop-shadow(0 0 6px #55dcff);
+}
+
+
