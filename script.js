@@ -173,61 +173,72 @@ $("trafficBtn").addEventListener("click", async () => {
         console.error(error);
     }
 });
-$("emergencyBtn").addEventListener("click", async () => {
 
+$("emergencyBtn").addEventListener("click", async () => {
     state.emergency = true;
 
     const ambulance = $("ambulance");
 
     ambulance.style.display = "block";
+    ambulance.style.transition = "left 1.2s linear, top 1.2s linear";
     ambulance.style.left = "30%";
-    ambulance.style.top = "325px";
+    ambulance.style.top = "345px";
 
     updateStats();
 
     try {
-
         const response = await fetch(
             "http://127.0.0.1:5000/city?command=emergency"
         );
 
         const data = await response.json();
 
-        if (data.status === "success") {
-
-            log(
-                "C Backend: Ambulance inserted into Priority Queue with highest priority."
-            );
-
-            console.log(
-                "C Priority Queue Output:",
-                data.output
-            );
-
-            setTimeout(() => {
-
-                ambulance.style.left = "78%";
-                ambulance.style.top = "105px";
-
-                log(
-                    "C Priority Queue: Ambulance dispatched toward hospital."
-                );
-
-            }, 3000);
-
-        } else {
-
-            log(
-                "Backend error: " + data.message
-            );
+        if (data.status !== "success") {
+            log("Backend error: " + (data.message || "Unknown error"));
+            return;
         }
 
-    } catch (error) {
-
         log(
-            "Could not connect to C Priority Queue backend."
+            "C Backend: Ambulance inserted into Priority Queue with highest priority."
         );
 
+        console.log("C Priority Queue Output:", data.output);
+
+        // Follow the horizontal road first, then turn onto
+        // the hospital-side road using intermediate positions.
+        const roadStops = [
+            { left: "42%", top: "345px" },
+            { left: "55%", top: "345px" },
+            { left: "68%", top: "345px" },
+            { left: "74%", top: "345px" },
+            { left: "76%", top: "300px" },
+            { left: "78%", top: "230px" },
+            { left: "80%", top: "160px" },
+            { left: "82%", top: "105px" }
+        ];
+
+        let stopIndex = 0;
+
+        function moveToNextStop() {
+            if (stopIndex >= roadStops.length) {
+                log("Ambulance reached the hospital via the displayed route.");
+                return;
+            }
+
+            const stop = roadStops[stopIndex];
+
+            ambulance.style.left = stop.left;
+            ambulance.style.top = stop.top;
+
+            stopIndex++;
+
+            setTimeout(moveToNextStop, 1200);
+        }
+
+        setTimeout(moveToNextStop, 500);
+
+    } catch (error) {
+        log("Could not connect to C Priority Queue backend.");
         console.error(error);
     }
 });
